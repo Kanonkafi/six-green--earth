@@ -23,7 +23,7 @@ const displayCategories=(categories)=>{
     const li=document.createElement("li") // li er modhhe create hobe tai li desi
     li.innerHTML = ` 
                  <button id="ctgorybtnfor-select-${cat.id}" onclick="loadTreesByCategory('${cat.id}')" 
-                    class="w-full text-left px-3 py-2 rounded-md hover:bg-green-300">
+                    class="removeselected-btn w-full text-left px-3 py-2 rounded-md hover:bg-green-300">
                     ${cat.category_name} 
                  </button>`;
      // kisu hosse na tai na ki kora lagebe append kora lagbe
@@ -31,6 +31,13 @@ const displayCategories=(categories)=>{
  });
 }
 
+/// active button gulo deactive korar jonn class add kore selam kothai const displayCategories=(categories) butoon er modhe "removeselected-btn" ei nam a r akhon  1ta function banabo
+const removeActive= ()=>{
+   const removeSelectedBtn = document.querySelectorAll(".removeselected-btn");
+   console.log(removeSelectedBtn);
+   // jehutu oneek gulo butoom jemon Fruit tree, flowerin tree tai loop chalate hobe
+   removeSelectedBtn.forEach(btn=> btn.classList.remove("active"));
+};
 
 // 2. Load Trees by Category
 
@@ -41,12 +48,15 @@ const loadTreesByCategory = (id) => {
    fetch(url)
    .then((res)=> res.json())
    .then((data)=> {
+    //  removeActive ai function ta call korbo
+    removeActive(); //remove all active button
+
     // akane category button a click hole secect hoye thak be se kaj
     const clickButton=document.getElementById(`ctgorybtnfor-select-${id}`)
        //console.log(clickButton)
        
        // aknon active name 1 ta class add korbo seta aber css a giye likbo jate selectroto obosthai 1 ta color pai
-       clickButton.classList.add("active")
+       clickButton.classList.add("active")// jekhane click hoise shudhu seta active rakbe
 
       // ei line age thekei seo displayTreesByCategory(data.plants)
       displayTreesByCategory(data.plants)
