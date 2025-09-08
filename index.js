@@ -1,3 +1,77 @@
+//  cart item  rakahr faka array banala,
+let cart = [];
+
+// -----------Add to Cart ----------
+const addToCart = (plant) => {
+  // check করব cart-a agei ase kina plants modhe plan karon array selo ei plant modhe ei id ase kina seda khujbe  id ,name , catagori chaile agulo delei holo
+  const existing = cart.find(item => item.id === plant.id);
+
+  if (existing) {
+    // যদি থাকে → শুধু quantity ১ বাড়াবে
+    existing.quantity += 1;
+  } else {
+    // না থাকলে → নতুন করে add করবে
+    cart.push({
+      id: plant.id,
+      name: plant.name,
+      price: plant.price,
+      quantity: 1 //ei je plant er modhe quntity add kors nutun arra te joma hobe
+    });
+  }
+
+  // cart update করার জন্য আলাদা ফাংশন কল করব
+  updateCartUI();
+};
+
+// ---------- Remove from Cart ----------
+const removeFromCart = (id) => {
+  // filter দিয়ে ওই item বাদ দিলাম
+  cart = cart.filter(item => item.id !== id);
+
+  // আবার UI update করব
+  updateCartUI();
+};
+
+// ---------- Update Cart UI ----------
+const updateCartUI = () => {
+  // cart aside এর ul আর total amount ধরলাম
+  const cartContainer = document.getElementById("cart-items");
+  const cartTotal = document.getElementById("cart-total");
+
+  // আগের সব clear করলাম
+  cartContainer.innerHTML = "";
+
+  // total হিসাবের জন্য একটা variable নিলাম
+  let total = 0;
+
+  // প্রতিটা cart item এর জন্য loop চালালাম
+  cart.forEach(item => {
+    // price × quantity = মোট দাম
+    total += item.price * item.quantity;
+
+    // নতুন li বানালাম
+    const li = document.createElement("li");
+    li.className = "flex justify-between items-center bg-gray-50 p-3 rounded-md";
+
+    // li এর ভেতরে html বসালাম
+    li.innerHTML = `
+      <div>
+        <p class="font-medium">${item.name}</p>
+        <p class="text-gray-500 text-xs">৳${item.price} × ${item.quantity}</p>
+      </div>
+      <button onclick="removeFromCart(${item.id})"
+        class="bg-red-100 text-red-600 px-2 py-1 rounded hover:bg-red-200">✕</button>
+    `;
+
+    // ul এ add করলাম
+    cartContainer.appendChild(li);
+  });
+
+  // মোট price বসালাম
+  cartTotal.innerText = `৳${total}`;
+};
+
+
 // 1. Load Categories
 const loadCategories=()=>{
     fetch("https://openapi.programming-hero.com/api/categories")
@@ -100,11 +174,11 @@ const displayTreesByCategory = (plants) => {
         <span class="inline-block bg-green-100 text-green-700 text-xs px-2 py-1 rounded">${plant.category}</span>
         <span class="font-semibold">৳${plant.price}</span>
       </div>
-
-      <button class="w-full mt-2 bg-green-600 text-white py-2 rounded-full hover:bg-green-700">
+        
+      <button onclick='addToCart(${JSON.stringify(plant)})' class="w-full mt-2 bg-green-600 text-white py-2 rounded-full hover:bg-green-700">
         Add to Cart
       </button>
-    `;
+    `; // uporer buttone onclick add korse jate click korlei your cart a add hoi
 
     treeContainer.appendChild(treeCard);
   });
@@ -150,3 +224,91 @@ const loadPlantsDetailbyModal= async (id)=>{
        }
        };
 loadCategories();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+////  akhne calculation ------- bujhano
+// 1️⃣ Cart array - সব item রাখার জন্য
+// let cart = []; 
+// এখন cart খালি, কোন tree নেই। প্রতিটা tree এখানে object আকারে রাখা হবে।
+
+// 2️⃣ Add to Cart function
+// const addToCart = (plant) => {
+  
+  // 2a. Check if this plant already exists in cart
+  // const existing = cart.find(item => item.id === plant.id);
+  // cart.find() চেক করে plant.id কার্টে আছে কি না
+  // যদি থাকে → existing হবে সেই object
+  // যদি না থাকে → existing হবে undefined
+
+  // if (existing) {
+    // 2b. যদি plant আগে থেকেই থাকে, quantity ১ বাড়াও
+    // existing.quantity += 1; 
+    // অর্থাৎ quantity = quantity + 1
+    // Cart এ duplicate object তৈরি হয় না
+  // } else {
+    // 2c. যদি plant নতুন হয়, cart এ push করো + quantity 1 দিয়ে
+    // cart.push({
+      // ...plant,       // plant object এর সব property এখানে নিয়ে আসো
+      // quantity: 1     // নতুন add হলে quantity শুরু হবে 1 থেকে
+  //   });
+  // }
+
+  // 3️⃣ Update UI
+//   updateCartUI();
+// };
+
+// 3️⃣ Remove from Cart
+// const removeFromCart = (id) => {
+  // filter দিয়ে ওই item বাদ দাও
+  // cart = cart.filter(item => item.id !== id);
+
+  // UI update
+  // updateCartUI();
+// };
+
+// 4️⃣ Update Cart UI
+// const updateCartUI = () => {
+//   const cartContainer = document.getElementById("cart-items");
+//   const cartTotal = document.getElementById("cart-total");
+
+  // আগের সব clear
+  // cartContainer.innerHTML = "";
+
+  // let total = 0; // মোট দাম হিসাবের জন্য
+
+  // cart.forEach(item => {
+//     total += item.price * item.quantity; // price * quantity
+
+//     const li = document.createElement("li");
+//     li.className = "flex justify-between items-center bg-gray-50 p-3 rounded-md";
+
+//     li.innerHTML = `
+//       <div>
+//         <p class="font-medium">${item.name}</p>
+//         <p class="text-gray-500 text-xs">৳${item.price} × ${item.quantity}</p>
+//       </div>
+//       <button onclick="removeFromCart(${item.id})"
+//         class="bg-red-100 text-red-600 px-2 py-1 rounded hover:bg-red-200">✕</button>
+//     `;
+
+//     cartContainer.appendChild(li);
+//   });
+
+//   cartTotal.innerText = `৳${total}`;
+// };
