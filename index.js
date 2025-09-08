@@ -92,7 +92,7 @@ const displayTreesByCategory = (plants) => {
     return;
   }
 
-  // যদি data থাকে
+  // যদি data থাকে ei khane modal er kaj kora hoise h4 a onclick="loadPlantsDetailbyModal(${plant.id})"
   plants.forEach((plant) => {
     const treeCard = document.createElement("div");
     treeCard.className =`
@@ -100,9 +100,9 @@ const displayTreesByCategory = (plants) => {
 
     treeCard.innerHTML = `
       <div class="h-36 bg-gray-200 rounded-lg mb-3 flex items-center justify-center">
-        <img src="${plant.image}" alt="${plant.name}" class="h-full w-full object-cover"/>
+        <img src="${plant.image}" alt="${plant.name}" class="h-full w-full rounded-lg object-cover"/>
       </div>
-      <h4 class="font-semibold text-lg mb-2">${plant.name}</h4>
+      <h4 onclick="loadPlantsDetailbyModal(${plant.id})" class="font-semibold text-lg mb-2">${plant.name}</h4>
       <p class="text-sm text-gray-600 mb-4 line-clamp-4">${plant.description}</p>
 
       <div class="flex justify-between items-center mb-2">
@@ -118,5 +118,31 @@ const displayTreesByCategory = (plants) => {
     treeContainer.appendChild(treeCard);
   });
 };
+//aknon oi MODAL ta load korbo eter nam hubuhu loadPlantsDetailbyModal(${plant.id})na hole kaj kore na eat actu vinnovabe korse
 
+const loadPlantsDetailbyModal= async (id)=>{
+  const url=`https://openapi.programming-hero.com/api/plant/${id}`
+  //console.log(url);
+  const res= await fetch(url);
+  const details= await res.json();
+  //console.log (details);
+  displaPlantsDetailbyModal(details.plants);
+}
+ const displaPlantsDetailbyModal=(plant)=>{
+  //console.log(plant);
+  const detailsModalBox= document.getElementById("detailsmodal-container");
+  // akhane modal kaj hosse
+  detailsModalBox.innerHTML=`
+    <h4 class="font-semibold text-lg mb-2">${plant.name}</h4>
+         <div class="h-36 bg-gray-200 rounded-lg mb-3 flex items-center justify-center">
+        <img src="${plant.image}" alt="${plant.name}" class="h-full w-full rounded-lg  object-cover"/>
+        </div>
+        <div class="flex flex-col items-start mb-2">
+             <span class="inline-block bg-green-100 text-green-700 py-1 rounded">category: ${plant.category}</span>
+             <span class="font-semibold">Price: ৳${plant.price}</span>
+         </div>
+          <p class="text-sm text-gray-600 mb-4 line-clamp-4">${plant.description}</p>
+  `;
+  document.getElementById("my_modal_5").showModal();
+ };
 loadCategories();
