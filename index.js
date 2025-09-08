@@ -82,10 +82,11 @@ const loadCategories=()=>{
 const displayCategories=(categories)=>{
     //1 dhore anlam 
     const categoryContainer=document.getElementById("category-container");  
-  categoryContainer.innerHTML= `
+     categoryContainer.innerHTML= `
         <li>
-            <button onclick="loadTreesByCategory('all', this)"
-                class="w-full text-left px-3 py-2 rounded-md hover:bg-green-300">
+            <button onclick="loadTreesByCategory('all')"   
+                id="ctgorybtnfor-select-all"
+                class="removeselected-btn w-full text-left px-3 py-2 rounded-md hover:bg-green-300">
                 All Trees
             </button>
         </li>
@@ -148,8 +149,8 @@ const displayTreesByCategory = (plants) => {
   // যদি data না থাকে
   if (!plants || plants.length === 0) {
     treeContainer.innerHTML = `
-      <div class="col-span-full text-center text-gray-500 py-10">
-        No plants available in this category 🌱
+      <div class="col-span-full text-center font-bold text-green-700 py-10">
+       🌱 No plants available in this category 🌱 </br>Please click bellow buttons 
       </div>
     `;
     //SPINNER call
@@ -160,8 +161,7 @@ const displayTreesByCategory = (plants) => {
   // যদি data থাকে ei khane modal er kaj kora hoise h4 a onclick="loadPlantsDetailbyModal(${plant.id})"
   plants.forEach((plant) => {
     const treeCard = document.createElement("div");
-    treeCard.className =`
-      "bg-white p-4 rounded-xl shadow-md hover:shadow-lg transition"`;
+    treeCard.className = `bg-white p-4 rounded-xl shadow-md hover:shadow-lg transition`;
 
     treeCard.innerHTML = `
       <div class="h-36 bg-gray-200 rounded-lg mb-3 flex items-center justify-center">
@@ -175,7 +175,7 @@ const displayTreesByCategory = (plants) => {
         <span class="font-semibold">৳${plant.price}</span>
       </div>
         
-      <button onclick='addToCart(${JSON.stringify(plant)})' class="w-full mt-2 bg-green-600 text-white py-2 rounded-full hover:bg-green-700">
+      <button onclick='addToCart(${JSON.stringify(plant)})' class="w-full mt-2 bg-[#15803D] text-white py-2 rounded-full hover:bg-green-600">
         Add to Cart
       </button>
     `; // uporer buttone onclick add korse jate click korlei your cart a add hoi
@@ -224,6 +224,14 @@ const loadPlantsDetailbyModal= async (id)=>{
        }
        };
 loadCategories();
+
+ //// selecting One Button----
+fetch("https://openapi.programming-hero.com/api/category/1") // 1Fruit Trees এর সঠিক ID
+  .then(res => res.json())
+  .then(data => {
+      displayTreesByCategory(data.plants.slice(0,3)); // শুধু 3 টা কার্ড দেখাবে
+      manageSpnnier(false); // spinner hide করবে
+  });
 
 
 
