@@ -42,6 +42,8 @@ const removeActive= ()=>{
 // 2. Load Trees by Category
 
 const loadTreesByCategory = (id) => {
+  // SPINNER kori jokhon load hobe tokhon hide hoye jabe
+  manageSpnnier(true);
    // console.log(id);  // button a j ('${cat.id}') eta korle console gia oi Fruit Tree kinba all, ei button gulo clik korle id show hoi
     const url=`https://openapi.programming-hero.com/api/category/${id}`
    // console.log(url); 
@@ -62,20 +64,7 @@ const loadTreesByCategory = (id) => {
       displayTreesByCategory(data.plants)
 
 
-   }) //ei plants ta kintu api er
-//   toggleSpinner(true);
-
-//   
-// 
-//     .then((data) => {
-//       displayTrees(data.plants);
-//       toggleSpinner(false);
-
-//       // Active Button highlight
-//       document.querySelectorAll("#category-container button")
-//         .forEach((b) => b.classList.remove("bg-green-600", "text-white"));
-//       btn.classList.add("bg-green-600", "text-white");
-//     });
+   }) 
 };
 
 const displayTreesByCategory = (plants) => {
@@ -89,6 +78,8 @@ const displayTreesByCategory = (plants) => {
         No plants available in this category 🌱
       </div>
     `;
+    //SPINNER call
+    manageSpnnier(false)
     return;
   }
 
@@ -117,6 +108,8 @@ const displayTreesByCategory = (plants) => {
 
     treeContainer.appendChild(treeCard);
   });
+  // ekaneo spinner funtion call
+  manageSpnnier(false)
 };
 //aknon oi MODAL ta load korbo eter nam hubuhu loadPlantsDetailbyModal(${plant.id})na hole kaj kore na eat actu vinnovabe korse
 
@@ -127,7 +120,7 @@ const loadPlantsDetailbyModal= async (id)=>{
   const details= await res.json();
   //console.log (details);
   displaPlantsDetailbyModal(details.plants);
-}
+};
  const displaPlantsDetailbyModal=(plant)=>{
   //console.log(plant);
   const detailsModalBox= document.getElementById("detailsmodal-container");
@@ -145,4 +138,15 @@ const loadPlantsDetailbyModal= async (id)=>{
   `;
   document.getElementById("my_modal_5").showModal();
  };
+
+ ///  <!-- SPINNER addition here -->
+       const manageSpnnier=(status)=>{
+       if(status== true){
+        document.getElementById("spinner").classList.remove("hidden");
+        document.getElementById("tree-container").classList.add("hidden");
+       }else{
+         document.getElementById("tree-container").classList.remove("hidden");
+        document.getElementById("spinner").classList.add("hidden");
+       }
+       };
 loadCategories();
