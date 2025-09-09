@@ -86,7 +86,7 @@ const displayCategories=(categories)=>{
         <li>
             <button onclick="loadTreesByCategory('all')"   
                 id="ctgorybtnfor-select-all"
-                class="removeselected-btn w-full text-left px-3 py-2 rounded-md hover:bg-green-300">
+                class="removeselected-btn w-auto md:w-full text-left px-3 py-2 rounded-md hover:bg-green-300">
                 All Trees
             </button>
         </li>
