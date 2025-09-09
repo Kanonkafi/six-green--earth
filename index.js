@@ -98,7 +98,7 @@ const displayCategories=(categories)=>{
     const li=document.createElement("li") // li er modhhe create hobe tai li desi
     li.innerHTML = ` 
                  <button id="ctgorybtnfor-select-${cat.id}" onclick="loadTreesByCategory('${cat.id}')" 
-                    class="removeselected-btn w-full text-left px-3 py-2 rounded-md hover:bg-green-300">
+                    class="removeselected-btn w-auto md:w-full text-left px-3 py-2 rounded-md hover:bg-green-300">
                     ${cat.category_name} 
                  </button>`;
      // kisu hosse na tai na ki kora lagebe append kora lagbe
